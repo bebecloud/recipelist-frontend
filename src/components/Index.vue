@@ -8,11 +8,8 @@
             </b-navbar-nav>
         </b-navbar>
 
-        <b-list-group class="w-50 h-100 mx-auto">
-            <b-list-group-item size="md" class="recipe-list-button">
-                Delicious Pasta Carbonara
-            </b-list-group-item>
-        </b-list-group>
+        <Recipes v-bind:recipes="[{id:0, title:'Pasta!'}]"/>
+
         <div id="testcontainer">
             {{ recipes }}
         </div>
@@ -20,19 +17,25 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Recipes from './Recipes.vue';
+
 export default {
-    name: 'Index',
-    data () {
-        return {
-            recipes: null
-        }
-    },
-    mounted () {
-        axios
-            .get('localhost:3000/recipes')
-            .then(response => (this.info = response))
-    }
-}
+  name: 'Index',
+  data() {
+    return {
+      recipes: null,
+    };
+  },
+  mounted() {
+    // axios
+    //   .get('localhost:3000/recipes')
+    //   .then(response => (this.recipes = response.data));
+  },
+  components: {
+    Recipes,
+  },
+};
 </script>
 
 <style scoped>

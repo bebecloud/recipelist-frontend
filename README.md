@@ -15,9 +15,9 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### Run your unit tests
 ```
-npm run test
+npm run test:unit
 ```
 
 ### Lints and fixes files
@@ -25,10 +25,6 @@ npm run test
 npm run lint
 ```
 
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Bootstrap Vue
+This project uses [Bootstrap-vue](https://bootstrap-vue.js.org/docs/components/alert) for components. 
+In the documentation, examples can be found on how to use them.
