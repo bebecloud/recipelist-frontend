@@ -6,7 +6,13 @@
             v-for="recipe in recipes"
             v-bind:key="recipe.id"
             button>
-            {{ recipe.title }}
+            <b-media>
+                <b-img v-bind:src="recipe.imageUrl" slot="aside" alt="Recipe Image" class="recipe-image"/>
+                <h5 class="mt-0">{{recipe.title}}</h5>
+                <p class="mb-0">
+                    {{recipe.instructions}}
+                </p>
+            </b-media>
         </b-list-group-item>
     </b-list-group>
 </template>
@@ -17,3 +23,10 @@ export default {
   props: ['recipes']
 };
 </script>
+
+<style scoped>
+    .recipe-image{
+        width: 80px;
+        height: 80px;
+    }
+</style>

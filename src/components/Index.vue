@@ -8,11 +8,7 @@
             </b-navbar-nav>
         </b-navbar>
 
-        <Recipes v-bind:recipes="[{id:0, title:'Pasta!'}]"/>
-
-        <div id="testcontainer">
-            {{ recipes }}
-        </div>
+        <Recipes v-bind:recipes="recipes"/>
     </div>
 </template>
 
@@ -28,9 +24,9 @@ export default {
     };
   },
   mounted() {
-    // axios
-    //   .get('localhost:3000/recipes')
-    //   .then(response => (this.recipes = response.data));
+    axios
+      .get('http://localhost:3000/recipes')
+      .then(response => (this.recipes = response.data));
   },
   components: {
     Recipes,
