@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <b-alert variant="success" show>Installation of Bootstrap-Vue Succesful!</b-alert>
     <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
@@ -36,7 +37,7 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String,
-  },
+  }
 };
 </script>
 
