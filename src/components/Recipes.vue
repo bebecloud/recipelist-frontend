@@ -20,7 +20,7 @@
     <Recipe v-bind:recipe="currentRecipe" ref="recipe"></Recipe>
   </div>
 </template>
-
+vb   
 <script>
 import Recipe from "./Recipe.vue";
 
