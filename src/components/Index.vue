@@ -16,7 +16,8 @@
 
     <!-- MODALS -->
     <!-- modal v-slot is not working!!!-->
-    <RecipeForm ref="recipeform">
+    <!-- v-on:db-update="refresh" not yet working ! -->
+    <RecipeForm v-on:db-update="refresh" ref="recipeform">
       <template v-slot:modal-ok>
         TestButtonOk
       </template>
@@ -24,6 +25,9 @@
         TestModalTitle
       </template>
     </RecipeForm>
+
+    <!-- DEBUG BUTTON -->
+    <b-button v-on:click="refresh">Refresh</b-button>
 
   </div>
 </template>
@@ -42,13 +46,19 @@ export default {
   },
   mounted() {
     axios
-      .get('http://localhost:3000/recipes')
-      .then((response) => { this.recipes = response.data; });
+        .get('http://localhost:3000/recipes')
+        .then((response) => { this.recipes = response.data; });
   },
   methods: {
     showCreateForm(edit = false, recipe = null) {
       console.log(edit);
       this.$refs.recipeform.showModal(edit, recipe);
+    },
+    refresh() {
+      console.log('Index: refresh')
+      axios
+        .get('http://localhost:3000/recipes')
+        .then((response) => { this.recipes = response.data; });
     },
   },
   components: {

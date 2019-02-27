@@ -4,7 +4,7 @@
         id="recipeForm"
         v-bind:title="formtitle"
         size="lg"
-        v-on:ok="submitData"
+        v-on:ok="submitData($event)"
         >
         <b-form>
             <b-form-group
@@ -87,22 +87,29 @@ export default {
     hideModal() {
       this.$refs.recipeFormModal.hide();
     },
-    submitData() {
+    submitData(event) {
+      if (this.recipe.title === '' || this.recipe.ingredients === '') {
+        // TODO provide better feedback, using the elements
+        event.preventDefault();
+        alert('Please fill in the title and ingredients');
+        return;
+      }
       if (this.editMode) {
         // PUT-request, requires id to be specified
-        
       } else {
         // POST-request
         axios
           .post('http://localhost:3000/recipes', {
-            'recipe': {
-              'title': this.recipe.title,
-              'ingredients': this.recipe.ingredients,
-              'instructions': this.recipe.instructions
+            recipe: {
+              title: this.recipe.title,
+              ingredients: [this.recipe.ingredients],
+              instructions: this.recipe.instructions,
             },
           })
-          .then((response) => { console.log(response); })
+          .then((response) => { console.log(response); });
       }
+      // NOT YET WORKING
+      this.$root.$emit('db-update');
       console.log('submitData triggered');
     },
   },
