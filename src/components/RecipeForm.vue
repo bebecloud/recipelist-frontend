@@ -4,8 +4,9 @@
         id="recipeForm"
         v-bind:title="formtitle"
         size="lg"
+        v-on:ok="submitData"
         >
-        <b-form @submit="onSubmit" @reset="onClear">
+        <b-form>
             <b-form-group
                 id="formTitle"
                 label="Title"
@@ -37,18 +38,17 @@
             </b-form-group>
 
             <b-form-group
-                id="formDescription"
-                label="Description"
-                label-for="formDescriptionInput"
+                id="formInstruction"
+                label="Instructions"
+                label-for="formInstructionInput"
             >
             <b-form-input
-                    id="formDescriptionInput"
+                    id="formInstructionInput"
                     type="text"
-                    v-model="recipe.description"
-                    placeholder="Description"
+                    v-model="recipe.instructions"
+                    placeholder="Instructions"
                 />
             </b-form-group>
-
             <!-- <b-button type="submit" variant="primary">Create</b-button>
             <b-button type="reset" variant="danger">Clear</b-button> -->
         </b-form>
@@ -56,29 +56,54 @@
  </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'RecipeForm',
   data() {
     return {
+      editMode: false,
       formtitle: 'Create Recipe',
+      buttonTextOk: 'Create',
       recipe: {
         title: '',
         ingredients: '',
-        description: '',
+        instructions: '',
       },
     };
   },
-  mounted() {
-    if (this.recipe) {
-      this.formtitle = 'Edit Recipe';
-    }
-  },
   methods: {
-    showModal() {
+    showModal(edit = false, recipe = null) {
+      this.editMode = edit;
+      if (this.editMode) {
+        this.formtitle = 'Edit Recipe';
+        this.buttonTextOk = 'Apply';
+        if (recipe != null) {
+          this.recipe = recipe;
+        }
+      }
       this.$refs.recipeFormModal.show();
     },
     hideModal() {
       this.$refs.recipeFormModal.hide();
+    },
+    submitData() {
+      if (this.editMode) {
+        // PUT-request, requires id to be specified
+        
+      } else {
+        // POST-request
+        axios
+          .post('http://localhost:3000/recipes', {
+            'recipe': {
+              'title': this.recipe.title,
+              'ingredients': this.recipe.ingredients,
+              'instructions': this.recipe.instructions
+            },
+          })
+          .then((response) => { console.log(response); })
+      }
+      console.log('submitData triggered');
     },
   },
 };

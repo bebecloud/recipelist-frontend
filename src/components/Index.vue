@@ -3,14 +3,27 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">NavBar</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
-        <b-button size="md" @click="showCreateForm">Create Recipe</b-button>
+        <b-button
+          size="md"
+          @click="showCreateForm(edit = false, recipe = null)"
+        >
+          Create Recipe
+        </b-button>
       </b-navbar-nav>
     </b-navbar>
 
     <Recipes v-bind:recipes="recipes"/>
 
     <!-- MODALS -->
-    <RecipeForm ref="recipeform"/>
+    <!-- modal v-slot is not working!!!-->
+    <RecipeForm ref="recipeform">
+      <template v-slot:modal-ok>
+        TestButtonOk
+      </template>
+      <template v-slot:modal-title>
+        TestModalTitle
+      </template>
+    </RecipeForm>
 
     <!-- Modal Test -->
     <b-button v-b-modal.modal1>Launch demo modal</b-button>
@@ -41,8 +54,9 @@ export default {
       .then((response) => { this.recipes = response.data; });
   },
   methods: {
-    showCreateForm() {
-      this.$refs.recipeform.showModal();
+    showCreateForm(edit = false, recipe = null) {
+      console.log(edit);
+      this.$refs.recipeform.showModal(edit, recipe);
     },
   },
   components: {
