@@ -24,32 +24,31 @@
 </template>
 
 <script>
-import axios from "axios";
-import Recipes from "./Recipes.vue";
-import RecipeForm from "./RecipeForm.vue";
+import axios from 'axios';
+import Recipes from './Recipes.vue';
+import RecipeForm from './RecipeForm.vue';
 
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
       recipes: null,
-      recipeShow
     };
   },
   mounted() {
     axios
-      .get("http://localhost:3000/recipes")
-      .then(response => (this.recipes = response.data));
+      .get('http://localhost:3000/recipes')
+      .then((response) => { this.recipes = response.data; });
   },
   methods: {
     showCreateForm() {
       this.$refs.recipeform.showModal();
-    }
+    },
   },
   components: {
     Recipes,
     RecipeForm,
-  }
+  },
 };
 </script>
 

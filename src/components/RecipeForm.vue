@@ -2,7 +2,8 @@
     <b-modal
         ref="recipeFormModal"
         id="recipeForm"
-        title="Create Recipe"
+        v-bind:title="formtitle"
+        size="lg"
         >
         <b-form @submit="onSubmit" @reset="onClear">
             <b-form-group
@@ -59,12 +60,18 @@ export default {
   name: 'RecipeForm',
   data() {
     return {
+      formtitle: 'Create Recipe',
       recipe: {
         title: '',
         ingredients: '',
         description: '',
       },
     };
+  },
+  mounted() {
+    if (this.recipe) {
+      this.formtitle = 'Edit Recipe';
+    }
   },
   methods: {
     showModal() {
