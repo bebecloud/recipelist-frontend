@@ -31,6 +31,8 @@ export default {
   methods: {
     showRecipe(recipe) {
         this.currentRecipe = recipe;
+        console.log('currentRecipe id in Recipes');
+        console.log(this.currentRecipe._id);
         this.$nextTick(() => {
             this.$root.$emit('bv::show::modal','recipeModal')
         })

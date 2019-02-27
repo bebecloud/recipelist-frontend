@@ -2,10 +2,15 @@
     <b-modal
         ref="recipeFormModal"
         id="recipeForm"
-        v-bind:title="formtitle"
         size="lg"
         v-on:ok="submitData($event)"
         >
+        <template v-slot:modal-title>
+          <slot name="title">Create</slot>
+        </template>
+        <template v-slot:modal-ok>
+          <slot name="ok">Create</slot>
+        </template>
         <b-form>
             <b-form-group
                 id="formTitle"
@@ -31,7 +36,7 @@
                 <b-form-input
                     id="formTitleInput"
                     type="text"
-                    v-model="recipe.ingredients"
+                    v-model="ingredientString"
                     required
                     placeholder="Ingredients"
                 />
@@ -65,9 +70,11 @@ export default {
       editMode: false,
       formtitle: 'Create Recipe',
       buttonTextOk: 'Create',
+      ingredientString: '',
       recipe: {
+        _id: '',
         title: '',
-        ingredients: '',
+        ingredients: [],
         instructions: '',
       },
     };
@@ -75,12 +82,8 @@ export default {
   methods: {
     showModal(edit = false, recipe = null) {
       this.editMode = edit;
-      if (this.editMode) {
-        this.formtitle = 'Edit Recipe';
-        this.buttonTextOk = 'Apply';
-        if (recipe != null) {
-          this.recipe = recipe;
-        }
+      if (this.editMode && recipe != null) {
+        this.recipe = recipe;
       }
       this.$refs.recipeFormModal.show();
     },
@@ -88,29 +91,49 @@ export default {
       this.$refs.recipeFormModal.hide();
     },
     submitData(event) {
+      // -------- Validation of form --------
       if (this.recipe.title === '' || this.recipe.ingredients === '') {
         // TODO provide better feedback, using the elements
         event.preventDefault();
         alert('Please fill in the title and ingredients');
         return;
       }
+      // -------- Update --------
       if (this.editMode) {
         // PUT-request, requires id to be specified
+        console.log('Recipe id in Form');
+        console.log(this.recipe.id);
+        const targetUrl = `${'http://localhost:3000/recipes/'}${this.recipe._id}`;
+        console.log(targetUrl);
+        console.log(this.recipe);
+
+        axios
+          .put(targetUrl, {
+            recipe: {
+              title: this.recipe.title,
+              ingredients: this.recipe.ingredients,
+              instructions: this.recipe.instructions,
+            },
+          })
+          .then((response) => { console.log(response); });
       } else {
-        // POST-request
+        // ------- Create --------
         axios
           .post('http://localhost:3000/recipes', {
             recipe: {
               title: this.recipe.title,
-              ingredients: [this.recipe.ingredients],
+              ingredients: this.recipe.ingredients,
               instructions: this.recipe.instructions,
             },
           })
           .then((response) => { console.log(response); });
       }
       // NOT YET WORKING
-      this.$root.$emit('db-update');
-      console.log('submitData triggered');
+      // ------- Update Parent -------
+      this.$root.$nextTick(() => {
+        this.$root.$emit('db-update');
+        console.log('submitData triggered');
+      });
     },
   },
 };
