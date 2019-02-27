@@ -20,27 +20,27 @@
     <Recipe v-bind:recipe="currentRecipe" ref="recipe"></Recipe>
   </div>
 </template>
-
+vb   
 <script>
-import Recipe from './Recipe.vue';
+import Recipe from "./Recipe.vue";
 
 export default {
-  name: 'Recipes',
-  props: ['recipes'],
+  name: "Recipes",
+  props: ["recipes"],
   components: { Recipe },
   methods: {
     showRecipe(recipe) {
-      this.currentRecipe = recipe;
-      this.$nextTick(() => {
-        this.$root.$emit('bv::show::modal', 'recipeModal');
-      });
-    },
+        this.currentRecipe = recipe;
+        this.$nextTick(() => {
+            this.$root.$emit('bv::show::modal','recipeModal')
+        })
+    }
   },
-  data() {
-    return {
-      currentRecipe: null,
-    };
-  },
+  data: function(){
+      return {
+          currentRecipe: null
+      };
+  }
 };
 </script>
 

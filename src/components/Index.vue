@@ -3,33 +3,44 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">NavBar</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
-        <b-button size="md" type="submit">Create Recipe</b-button>
+        <b-button size="md" @click="showCreateForm">Create Recipe</b-button>
       </b-navbar-nav>
     </b-navbar>
 
     <Recipes v-bind:recipes="recipes"/>
+
+    <!-- MODALS -->
+    <RecipeForm ref="recipeform"/>
+
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import Recipes from "./Recipes.vue";
+import axios from 'axios';
+import Recipes from './Recipes.vue';
+import RecipeForm from './RecipeForm.vue';
 
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
-      recipes: null
+      recipes: null,
     };
   },
   mounted() {
-    axios.get("http://localhost:3000/recipes").then(response => {
-      this.recipes = response.data;
-    });
+    axios
+      .get('http://localhost:3000/recipes')
+      .then((response) => { this.recipes = response.data; });
+  },
+  methods: {
+    showCreateForm() {
+      this.$refs.recipeform.showModal();
+    },
   },
   components: {
-    Recipes
-  }
+    Recipes,
+    RecipeForm,
+  },
 };
 </script>
 
