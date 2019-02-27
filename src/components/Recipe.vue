@@ -1,6 +1,6 @@
  <template>
-    <b-modal 
-        ref="recipeModal" 
+    <b-modal
+        ref="recipeModal"
         id="recipeModal"
         title="Recipe"
         v-if="recipe">
@@ -10,15 +10,14 @@
         </p>
     </b-modal>
  </template>
- 
- <script>
- export default {
-     name: 'Recipe',
-     props: ['recipe'],
- }
- </script>
- 
+
+<script>
+export default {
+  name: 'Recipe',
+  props: ['recipe'],
+};
+</script>
+
  <style>
- 
+
  </style>
- 

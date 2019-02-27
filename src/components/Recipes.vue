@@ -22,25 +22,25 @@
 </template>
 
 <script>
-import Recipe from "./Recipe.vue";
+import Recipe from './Recipe.vue';
 
 export default {
-  name: "Recipes",
-  props: ["recipes"],
+  name: 'Recipes',
+  props: ['recipes'],
   components: { Recipe },
   methods: {
     showRecipe(recipe) {
-        this.currentRecipe = recipe;
-        this.$nextTick(() => {
-            this.$root.$emit('bv::show::modal','recipeModal')
-        })
-    }
+      this.currentRecipe = recipe;
+      this.$nextTick(() => {
+        this.$root.$emit('bv::show::modal', 'recipeModal');
+      });
+    },
   },
-  data: function(){
-      return {
-          currentRecipe: null
-      };
-  }
+  data() {
+    return {
+      currentRecipe: null,
+    };
+  },
 };
 </script>
 
