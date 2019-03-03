@@ -15,15 +15,11 @@
     <Recipes v-bind:recipes="recipes"/>
 
     <!-- MODALS -->
-    <!-- modal v-slot is not working!!!-->
-    <RecipeForm ref="recipeform">
-      <template v-slot:modal-ok>
-        TestButtonOk
-      </template>
-      <template v-slot:modal-title>
-        TestModalTitle
-      </template>
-    </RecipeForm>
+    <!-- v-on:db-update="refresh" not yet working ! -->
+    <RecipeForm v-on:db-update="refresh" ref="recipeform"/>
+
+    <!-- DEBUG BUTTON -->
+    <b-button v-on:click="refresh">Refresh</b-button>
 
   </div>
 </template>
@@ -49,6 +45,12 @@ export default {
     showCreateForm(edit = false, recipe = null) {
       console.log(edit);
       this.$refs.recipeform.showModal(edit, recipe);
+    },
+    refresh() {
+      console.log('Index: refresh');
+      axios
+        .get('http://localhost:3000/recipes')
+        .then((response) => { this.recipes = response.data; });
     },
   },
   components: {
