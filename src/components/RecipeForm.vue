@@ -56,6 +56,7 @@
 
 <script>
 import axios from "axios";
+import {DataManager} from '../DataManager.js';
 
 export default {
   name: "RecipeForm",
@@ -64,7 +65,6 @@ export default {
       editMode: false,
       formtitle: "Create Recipe",
       buttonTextOk: "Create",
-      ingredientString: "",
       recipe: {
         _id: "",
         title: "",
@@ -73,6 +73,16 @@ export default {
         imageUrl: "",
       }
     };
+  },
+  computed: {
+    ingredientString: {
+      get(){
+        return this.recipe.ingredients.join(",");
+      },
+      set(ingredients){
+        this.recipe.ingredients = ingredients.split(",");
+      }
+    }
   },
   methods: {
     showModal(edit = false, recipe = null) {
@@ -95,43 +105,13 @@ export default {
         alert("Please fill in the title and ingredients");
         return;
       }
-      // -------- Update --------
-      if (this.editMode) {
-        // PUT-request, requires id to be specified
-        const targetUrl = `${"http://localhost:3000/recipes/"}${
-          this.recipe._id
-        }`;
-        
-        console.log(targetUrl);
-        console.log(this.recipe);
 
-        axios
-          .put(targetUrl, {
-            recipe: {
-              title: this.recipe.title,
-              ingredients: this.recipe.ingredients,
-              instructions: this.recipe.instructions,
-              imageUrl: this.recipe.imageUrl,
-            }
-          })
-          .then(response => {
-            console.log(response);
-          });
+      if (this.editMode) {
+        DataManager.editRecipe(this.recipe);
       } else {
-        // ------- Create --------
-        axios
-          .post("http://localhost:3000/recipes", {
-            recipe: {
-              title: this.recipe.title,
-              ingredients: this.recipe.ingredients,
-              instructions: this.recipe.instructions,
-              imageUrl: this.recipe.imageUrl,
-            }
-          })
-          .then(response => {
-            console.log(response);
-          });
+        DataManager.addRecipe(this.recipe);
       }
+
       // NOT YET WORKING
       // ------- Update Parent -------
       this.$root.$nextTick(() => {

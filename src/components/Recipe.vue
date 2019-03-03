@@ -13,7 +13,7 @@
     <h2>Instructions:</h2>  
     <p>{{ recipe.instructions }}</p>
     <b-button @click="editRecipe">Edit Recipe</b-button>
-    <b-button @click="deleteRecipe">Delete</b-button>
+    <b-button @click="deleteRecipe" variant="danger">Delete</b-button>
     <RecipeForm ref="recipeform"/>
   </b-modal>
 </template>
@@ -21,6 +21,7 @@
 <script>
 import axios from 'axios';
 import RecipeForm from './RecipeForm.vue';
+import {DataManager} from '../DataManager.js'
 
 export default {
   name: 'Recipe',
@@ -30,15 +31,13 @@ export default {
       this.$refs.recipeform.showModal(true, this.recipe);
     },
     deleteRecipe() {
-      axios
-        .delete('http://localhost:3000/recipes/'+this.recipe._id)
-        .then((response) => { console.log(response); });
+        DataManager.deleteRecipe(this.recipe);
         this.$refs.recipeModal.hide();
     },
     refresh() {
-      axios
-        .get('http://localhost:3000/recipes/'+this.recipe._id)
-        .then((response) => { this.recipe = response.data });
+        DataManager.refreshRecipe(this.recipe).then((response) => { 
+          this.recipe = response.data 
+        });
     },
   },
   components: {
