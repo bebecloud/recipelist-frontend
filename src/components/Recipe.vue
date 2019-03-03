@@ -27,10 +27,7 @@ export default {
   props: ['recipe'],
   methods: {
     editRecipe() {
-      console.log('Recipe id in Recipe');
-      console.log(this.recipe._id);
       this.$refs.recipeform.showModal(true, this.recipe);
-      console.log('Recipe: edit');
     },
     deleteRecipe() {
       axios
