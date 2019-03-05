@@ -9,11 +9,14 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "auth0-js": "^9.10.0",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.13",
     "jquery": "^3.3.1",
-    "vue": "^2.6.6"
+    "jsonwebtoken": "^8.5.0",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

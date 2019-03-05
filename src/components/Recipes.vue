@@ -31,6 +31,7 @@ export default {
   methods: {
     showRecipe(recipe) {
       this.currentRecipe = recipe;
+      // Authenticate for "Edit button"
       this.$nextTick(() => {
         this.$root.$emit('bv::show::modal', 'recipeModal');
       });
