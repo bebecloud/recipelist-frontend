@@ -2,6 +2,9 @@ language: node_js
 node_js:
 - '10'
 
+script:
+- echo "skipping tests"
+
 deploy:
   provider: s3
   access_key_id: AKIAJ3CHBOLVZQTLTWJA
@@ -10,5 +13,6 @@ deploy:
   bucket: recipelist-frontend
   local-dir: dist
   acl: public_read
+  skip_cleanup: true
   on:
     repo: bebecloud/recipelist-frontend
