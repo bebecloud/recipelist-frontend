@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- '10'
+
+deploy:
+  provider: s3
+  access_key_id: AKIAJ3CHBOLVZQTLTWJA
+  secret_access_key:
+    secure: lLr44TAd2SDpE/1lZT4wGMfjE8kJfz1e2118b9SGFnfUcl3ljxwPXvdpeMhkQmuxvIbErGg2FXZWYZfbziE3vcR5pSLaPALLdxOhIDypHl92qx3n22My3RvSD2jy68YXz/i4I2/H1ml7WdV0uKnUxCEqr3QMdwFo1OtaVBjH4uy668kEnPVm81JSlh2djc32MDlK+HLm7Q8Fwa/QqNxA4bgs8ugocCidw1lX6HFFcWTrtcft5+/dhTvqyKGTZ0gP14Owx1TVAWuVqcWsxgrGqP4iM6/Pil2ae6t0vntbQGSGgKJjoIRTescz+fxv++UPBIz928ZZMLKMLIymdiiZD2CRZpKyfCbLD9pqXJfLjOpu6sTf/HjEN+l8MCVThpS1qtPeUQxeJOcQBdeh/heP4S91GTD1tEzsvHrXY4ZRbDU07EKFRMJo6XaSjmBEEl6QAxn/eGfwtt+v4ajseqxJa/nwCkSxS5vROOtz56ITOjtxkdy/hiOz84iIVwGx3ufd/M6JTqlgf9U+HKq7+Gi7ug/SCVmIL1ZOBbSMmq+eKQ8GNTiOibYRgIqscT9KuPfeo0no8fSJNZ1GJ0UqehvpnVHIueby//SIAn6cPhL5Sw5Iv5fTxNE84/AzEhvsNTLFWgaag2RB/wsnnFIgjvQ2N8gD6BUjX9++69ApRg2BfhI=
+  bucket: recipelist-frontend
+  local-dir: dist
+  acl: public_read
+  on:
+    repo: bebecloud/recipelist-frontend
