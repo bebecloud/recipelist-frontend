@@ -42,14 +42,24 @@
         />
       </b-form-group>
 
-      <b-form-group id="formImageUrl" label="Image URL" label-for="formImagUrlInput">
+      <b-form-group id="formImageUpload" label="Upload an image" label-for="formImageInput">
+        <b-form-file 
+          accept="image/*"
+          v-model="currentImage"
+          :state="Boolean(currentImage)"
+          placeholder="Choose image.."
+          drop-placholder="Drop an image here.."
+        />
+      </b-form-group>
+
+      <!-- <b-form-group id="formImageUrl" label="Image URL" label-for="formImagUrlInput">
         <b-form-input
           id="formImagUrlInput"
           type="text"
           v-model="recipe.imageUrl"
           placeholder="http://[...].jpg"
         />
-      </b-form-group>
+      </b-form-group> -->
     </b-form>
   </b-modal>
 </template>
@@ -65,6 +75,7 @@ export default {
       editMode: false,
       formtitle: "Create Recipe",
       buttonTextOk: "Create",
+      currentImage: null,
       recipe: {
         _id: "",
         title: "",
@@ -106,8 +117,10 @@ export default {
         return;
       }
 
+      console.log(this.currentImage);
+
       if (this.editMode) {
-        DataManager.editRecipe(this.recipe);
+        DataManager.editRecipe(this.recipe, this.currentImage);
       } else {
         DataManager.addRecipe(this.recipe);
       }
