@@ -53,14 +53,14 @@
       </b-navbar-nav>
     </b-navbar>
 
-    <Recipes v-bind:recipes="recipes"/>
+    <Recipes v-on:db-update="refresh" v-bind:recipes="recipes"/>
 
     <!-- MODALS -->
     <!-- v-on:db-update="refresh" not yet working ! -->
     <RecipeForm v-on:db-update="refresh" ref="recipeform"/>
 
     <!-- DEBUG BUTTON -->
-    <b-button v-on:click="refresh">Refresh</b-button>
+    <!-- <b-button v-on:click="refresh">Refresh</b-button> -->
   </div>
 </template>
 
@@ -69,6 +69,7 @@ import axios from 'axios';
 // eslint-disable-next-line
 import Recipes from './components/Recipes.vue';
 import RecipeForm from './components/RecipeForm.vue';
+import { DataManager } from './DataManager';
 
 export default {
   name: 'app',
@@ -87,9 +88,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/recipes').then((response) => {
-      this.recipes = response.data;
-    });
+    this.refresh();
     this.isAuthenticated = this.$auth.profile !== null;
   },
   methods: {
@@ -98,10 +97,9 @@ export default {
       this.$refs.recipeform.showModal(edit, recipe);
     },
     refresh() {
-      console.log('Index: refresh');
-      axios.get('http://localhost:3000/recipes').then((response) => {
+      DataManager.getRecipes().then((response) => {
         this.recipes = response.data;
-      });
+      })
     },
     login() {
       this.$auth.login();

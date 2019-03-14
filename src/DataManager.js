@@ -9,6 +9,8 @@ function getDatabaseObject(recipe) {
             instructions: recipe.instructions,
             ingredients: recipe.ingredients,
             imageUrl: recipe.imageUrl,
+            author_id: recipe.author_id,
+            author: recipe.author,
         }
     }
 }
@@ -18,9 +20,12 @@ function recipeUrl(recipe){
 }
 
 export const DataManager = {
+    getRecipes: () => {
+        return axios.get(HOST + "/recipes");
+    },
     addRecipe: (recipe) => {
         axios
-            .post(HOST + "/recipes", getCreateObject(recipe))
+            .post(HOST + "/recipes", getDatabaseObject(recipe))
             .then(response => {
                 console.log(response);
             });
@@ -33,13 +38,9 @@ export const DataManager = {
             });
     },
     deleteRecipe: (recipe) => {
-        axios
-            .delete(HOST + '/recipes/' + recipe._id)
-            .then((response) => { 
-                console.log(response); 
-            });
+        return axios.delete(HOST + '/recipes/' + recipe._id);
     },
     refreshRecipe: (recipe) => {
-        return axios.get(recipeUrl(recipe))
+        return axios.get(recipeUrl(recipe));
     }
 }

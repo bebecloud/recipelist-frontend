@@ -11,13 +11,17 @@
       >
         <b-media>
           <b-img v-bind:src="recipe.imageUrl" slot="aside" alt="Recipe Image" class="recipe-image"/>
-          <h5 class="mt-0">{{recipe.title}}</h5>
+          <div class="ml-0">
+            <h5>{{recipe.title}}</h5>
+            By {{recipe.author}}
+          </div>
+          
           <p class="mb-0">{{recipe.instructions}}</p>
         </b-media>
       </b-list-group-item>
     </b-list-group>
 
-    <Recipe v-bind:recipe="currentRecipe" ref="recipe"></Recipe>
+    <Recipe v-on:db-update="refresh" v-bind:recipe="currentRecipe" ref="recipe"></Recipe>
   </div>
 </template>
 vb
@@ -29,9 +33,11 @@ export default {
   props: ['recipes'],
   components: { Recipe },
   methods: {
+    refresh() {
+      this.$emit('db-update');
+    },
     showRecipe(recipe) {
       this.currentRecipe = recipe;
-      // Authenticate for "Edit button"
       this.$nextTick(() => {
         this.$root.$emit('bv::show::modal', 'recipeModal');
       });
