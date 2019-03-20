@@ -38,7 +38,7 @@
       </b-navbar-nav>
 
       <b-navbar-brand class="m-auto" href="#">
-        RB
+        RecipeBook
       </b-navbar-brand>
 
       <b-navbar-nav class="ml-auto">
@@ -55,17 +55,13 @@
 
     <Recipes v-on:db-update="refresh" v-bind:recipes="recipes"/>
 
-    <!-- MODALS -->
-    <!-- v-on:db-update="refresh" not yet working ! -->
+    <!-- MODAL -->
     <RecipeForm v-on:db-update="refresh" ref="recipeform"/>
 
-    <!-- DEBUG BUTTON -->
-    <!-- <b-button v-on:click="refresh">Refresh</b-button> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 // eslint-disable-next-line
 import Recipes from './components/Recipes.vue';
 import RecipeForm from './components/RecipeForm.vue';
@@ -99,7 +95,7 @@ export default {
     refresh() {
       DataManager.getRecipes().then((response) => {
         this.recipes = response.data;
-      })
+      });
     },
     login() {
       this.$auth.login();
@@ -108,6 +104,7 @@ export default {
       this.$auth.logout();
     },
     handleLoginEvent(data) {
+      console.log(data);
       this.isAuthenticated = data.loggedIn;
       this.profile = data.profile;
     },
