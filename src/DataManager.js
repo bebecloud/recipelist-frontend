@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOST = "http://localhost:3000";
+const API_URL = process.env.NODE_ENV === 'production' ? 'http://ec2-3-94-8-177.compute-1.amazonaws.com:30000' : 'http://localhost:3000';
 
 function getDatabaseObject(recipe) {
     return {
@@ -16,16 +16,16 @@ function getDatabaseObject(recipe) {
 }
 
 function recipeUrl(recipe){
-    return `${HOST + "/recipes/"}${recipe._id}`;
+    return `${API_URL + "/recipes/"}${recipe._id}`;
 }
 
 export const DataManager = {
     getRecipes: () => {
-        return axios.get(HOST + "/recipes");
+        return axios.get(API_URL + "/recipes");
     },
     addRecipe: (recipe) => {
         axios
-            .post(HOST + "/recipes", getDatabaseObject(recipe))
+            .post(API_URL + "/recipes", getDatabaseObject(recipe))
             .then(response => {
                 console.log(response);
             });
@@ -38,7 +38,7 @@ export const DataManager = {
             });
     },
     deleteRecipe: (recipe) => {
-        return axios.delete(HOST + '/recipes/' + recipe._id);
+        return axios.delete(API_URL + '/recipes/' + recipe._id);
     },
     refreshRecipe: (recipe) => {
         return axios.get(recipeUrl(recipe));
