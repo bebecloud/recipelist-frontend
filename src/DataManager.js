@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const HOST = "http://localhost:3000";
 const BUCKET = "https://bebecloudimages.s3.amazonaws.com/";
 const IMAGE_BASE = "https://s3.amazonaws.com/bebecloudimages/"
 const IMAGE_PLACEHOLDER = "https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg";
+const API_URL = process.env.NODE_ENV === 'production' ? 'http://ec2-3-94-8-177.compute-1.amazonaws.com:30000' : 'http://localhost:3000';
 
 function getDatabaseObject(recipe) {
     return {
@@ -12,12 +12,14 @@ function getDatabaseObject(recipe) {
             instructions: recipe.instructions,
             ingredients: recipe.ingredients,
             imageUrl: recipe.imageUrl,
+            author_id: recipe.author_id,
+            author: recipe.author,
         }
     }
 }
 
-function recipeUrl(recipe) {
-    return `${HOST + "/recipes/"}${recipe._id}`;
+function recipeUrl(recipe){
+    return `${API_URL + "/recipes/"}${recipe._id}`;
 }
 
 function uploadImage(imageFile) {
@@ -35,9 +37,12 @@ function uploadImage(imageFile) {
 }
 
 function pushNewRecipe(recipe) {
-    axios.post(HOST + "/recipes", getCreateObject(recipe))
+    axios.post(API_URL + "/recipes", getDatabaseObject(recipe))
         .then(response => {
             console.log(response);
+        }).catch(error =>{
+            console.log("Recipe uplaod failed: ");
+            console.log(error)
         });
 }
 
@@ -53,12 +58,15 @@ export const DataManager = {
         if (imageFile) {
             uploadImage(imageFile).then(imageUrl => {
                 recipe.imageUrl = imageUrl;
-                pushNewRecipe(recipe.imageUrl)
+                pushNewRecipe(recipe);
             })
         } else {
             recipe.imageUrl = IMAGE_PLACEHOLDER;
             pushNewRecipe(recipe);
         }
+    },
+    getRecipes: () => {
+        return axios.get(API_URL + "/recipes");
     },
     editRecipe: (recipe, imageFile = null) => {
         if (imageFile) {
@@ -71,13 +79,9 @@ export const DataManager = {
         }
     },
     deleteRecipe: (recipe) => {
-        axios
-            .delete(HOST + '/recipes/' + recipe._id)
-            .then((response) => {
-                console.log(response);
-            });
+        return axios.delete(API_URL + '/recipes/' + recipe._id);
     },
     refreshRecipe: (recipe) => {
-        return axios.get(recipeUrl(recipe))
+        return axios.get(recipeUrl(recipe));
     }
 }

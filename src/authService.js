@@ -1,4 +1,5 @@
 // src/authService.js
+/* eslint-disable */
 
 import auth0 from 'auth0-js';
 import EventEmitter from 'events';
@@ -11,7 +12,7 @@ const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
   redirectUri: `${window.location.origin}/callback`,
   clientID: authConfig.clientId,
-  responseType: 'id_token',
+  responseType: 'token id_token',
   scope: 'openid profile email',
 });
 
@@ -39,6 +40,7 @@ class AuthService extends EventEmitter {
           reject(err);
         } else {
           this.localLogin(authResult);
+          console.log('token: '+ authResult.idToken);
           resolve(authResult.idToken);
         }
       });

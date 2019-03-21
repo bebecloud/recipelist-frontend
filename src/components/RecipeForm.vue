@@ -51,25 +51,16 @@
           drop-placholder="Drop an image here.."
         />
       </b-form-group>
-
-      <!-- <b-form-group id="formImageUrl" label="Image URL" label-for="formImagUrlInput">
-        <b-form-input
-          id="formImagUrlInput"
-          type="text"
-          v-model="recipe.imageUrl"
-          placeholder="http://[...].jpg"
-        />
-      </b-form-group> -->
     </b-form>
   </b-modal>
 </template>
 
 <script>
-import axios from "axios";
-import {DataManager} from '../DataManager.js';
+// eslint-disable-next-line
+import {DataManager} from "../DataManager.js"
 
 export default {
-  name: "RecipeForm",
+  name: 'RecipeForm',
   data() {
     return {
       editMode: false,
@@ -77,31 +68,32 @@ export default {
       buttonTextOk: "Create",
       currentImage: null,
       recipe: {
-        _id: "",
-        title: "",
+        _id: '',
+        title: '',
         ingredients: [],
-        instructions: "",
-        imageUrl: "",
-      }
+        instructions: '',
+        imageUrl: '',
+        author: '',
+      },
     };
   },
   computed: {
     ingredientString: {
-      get(){
-        return this.recipe.ingredients.join(",");
+      get() {
+        return this.recipe.ingredients.join(',');
       },
-      set(ingredients){
-        this.recipe.ingredients = ingredients.split(",");
-      }
-    }
+      set(ingredients) {
+        this.recipe.ingredients = ingredients.split(',');
+      },
+    },
   },
   methods: {
     showModal(edit = false, recipe = null) {
       this.editMode = edit;
       if (this.editMode && recipe != null) {
         this.recipe = recipe;
-        this.formtitle = "Edit Recipe";
-        this.buttonTextOk = "Update";
+        this.formtitle = 'Edit Recipe';
+        this.buttonTextOk = 'Update';
       }
       this.$refs.recipeFormModal.show();
     },
@@ -110,29 +102,33 @@ export default {
     },
     submitData(event) {
       // -------- Validation of form --------
-      if (this.recipe.title === "" || this.recipe.ingredients === "") {
+      if (this.recipe.title === '' || this.recipe.ingredients === '') {
         // TODO provide better feedback, using the elements
         event.preventDefault();
-        alert("Please fill in the title and ingredients");
+        alert('Please fill in the title and ingredients');
         return;
       }
 
-      console.log(this.currentImage);
+      if (!this.$auth.profile) {
+        alert('Not logged in');
+        return;
+      }
 
       if (this.editMode) {
         DataManager.editRecipe(this.recipe, this.currentImage);
       } else {
-        DataManager.addRecipe(this.recipe);
+        this.recipe.author_id = this.$auth.profile.sub;
+        this.recipe.author = this.$auth.profile.nickname;
+        DataManager.addRecipe(this.recipe, this.currentImage);
       }
 
       // NOT YET WORKING
       // ------- Update Parent -------
       this.$root.$nextTick(() => {
-        this.$root.$emit("db-update");
-        console.log("submitData triggered");
+        this.$emit('db-update');
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
